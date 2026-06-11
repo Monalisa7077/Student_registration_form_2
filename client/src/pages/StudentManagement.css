@@ -1,0 +1,40 @@
+.student-management-container {
+  max-width: 1200px;
+  margin: 30px auto;
+  padding: 20px;
+}
+
+.student-management-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.student-management-title {
+  color: #2d2853;
+  font-size: 32px;
+  margin: 0;
+}
+
+.create-student-btn {
+  background-color: #2d2853;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 15px;
+  transition: 0.3s;
+}
+
+.create-student-btn:hover {
+  background-color: #433d7a;
+}
+
+.student-table-wrapper {
+  background: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+}
