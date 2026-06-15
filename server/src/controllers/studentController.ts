@@ -21,8 +21,6 @@ export const registerStudent = async (
 
     const students = await Student.find();
 
-    // Check duplicate email + password
-
     const existingStudent =
       students.find((student) => {
         return (
@@ -119,37 +117,6 @@ export const getStudents = async (
   }
 };
 
-
-// export const updateStudent = async (req: Request, res: Response) => {
-//   try {
-//     const { id } = req.params;
-
-//     const updatedStudent = await Student.findByIdAndUpdate(
-//       id,
-//       {
-//         fullName: encryptData(req.body.fullName),
-//         email: req.body.email,
-//         phoneNumber: encryptData(req.body.phoneNumber),
-//         dob: encryptData(req.body.dob),
-//         gender: encryptData(req.body.gender),
-//         address: encryptData(req.body.address),
-//         courseEnrolled: encryptData(req.body.courseEnrolled),
-//        password: req.body.password,
-//       },
-//       { new: true }
-//     );
-
-//     res.status(200).json({
-//       success: true,
-//       data: updatedStudent,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: "Update Failed",
-//     });
-//   }
-// };
 
 
 
