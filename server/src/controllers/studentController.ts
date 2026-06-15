@@ -19,26 +19,54 @@ export const registerStudent = async (
       password,
     } = req.body;
 
+    const students = await Student.find();
+
+    // Check duplicate email + password
+
+    const existingStudent =
+      students.find((student) => {
+        return (
+          decryptData(student.email) ===
+          email &&
+          decryptData(student.password) ===
+          password
+        );
+      });
+
+    if (existingStudent) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "A student with the same email and password already exists",
+      });
+    }
+
     const student = await Student.create({
-  fullName: encryptData(fullName),
+      fullName: encryptData(fullName),
 
-  email: email,
+      email: encryptData(email),
 
-  phoneNumber: encryptData(phoneNumber),
+      phoneNumber: encryptData(
+        phoneNumber
+      ),
 
-  dob: encryptData(dob),
+      dob: encryptData(dob),
 
-  gender: gender,
+      gender: encryptData(gender),
 
-  address: encryptData(address),
+      address: encryptData(address),
 
-  courseEnrolled: encryptData(courseEnrolled),
+      courseEnrolled: encryptData(
+        courseEnrolled
+      ),
 
-  password: password,
-});
+      password: encryptData(password),
+    });
+
     res.status(201).json({
       success: true,
-      message: "Student Registered Successfully",
+      message:
+        "Student Registered Successfully",
       data: student,
     });
   } catch (error) {
@@ -65,13 +93,13 @@ export const getStudents = async (
       _id: student._id,
 
       fullName: decryptData(student.fullName),
-      email: student.email,
+      email: decryptData(student.email),
       phoneNumber: decryptData(student.phoneNumber),
       dob: decryptData(student.dob),
       gender: decryptData(student.gender),
       address: decryptData(student.address),
       courseEnrolled: decryptData(student.courseEnrolled),
-      password: student.password,
+      password: decryptData(student.password),
 
       createdAt: student.createdAt,
       updatedAt: student.updatedAt,
@@ -92,37 +120,112 @@ export const getStudents = async (
 };
 
 
+// export const updateStudent = async (req: Request, res: Response) => {
+//   try {
+//     const { id } = req.params;
+
+//     const updatedStudent = await Student.findByIdAndUpdate(
+//       id,
+//       {
+//         fullName: encryptData(req.body.fullName),
+//         email: req.body.email,
+//         phoneNumber: encryptData(req.body.phoneNumber),
+//         dob: encryptData(req.body.dob),
+//         gender: encryptData(req.body.gender),
+//         address: encryptData(req.body.address),
+//         courseEnrolled: encryptData(req.body.courseEnrolled),
+//        password: req.body.password,
+//       },
+//       { new: true }
+//     );
+
+//     res.status(200).json({
+//       success: true,
+//       data: updatedStudent,
+//     });
+//   } catch (error) {
+//     res.status(500).json({
+//       success: false,
+//       message: "Update Failed",
+//     });
+//   }
+// };
+
+
+
+
 export const updateStudent = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
 
-    const updatedStudent = await Student.findByIdAndUpdate(
-      id,
-      {
-        fullName: encryptData(req.body.fullName),
-        email: req.body.email,
-        phoneNumber: encryptData(req.body.phoneNumber),
-        dob: encryptData(req.body.dob),
-        gender: encryptData(req.body.gender),
-        address: encryptData(req.body.address),
-        courseEnrolled: encryptData(req.body.courseEnrolled),
-       password: req.body.password,
-      },
-      { new: true }
-    );
+
+    const students = await Student.find({
+      _id: { $ne: id },
+    });
+
+    const existingStudent =
+      students.find((student) => {
+        return (
+          decryptData(student.email) ===
+          req.body.email &&
+          decryptData(student.password) ===
+          req.body.password
+        );
+      });
+
+    if (existingStudent) {
+      return res.status(400).json({
+        success: false,
+        message:
+          "A student with the same email and password already exists",
+      });
+    }
+
+    const updatedStudent =
+      await Student.findByIdAndUpdate(
+        id,
+        {
+          fullName: encryptData(
+            req.body.fullName
+          ),
+          email: encryptData(
+            req.body.email
+          ),
+          phoneNumber: encryptData(
+            req.body.phoneNumber
+          ),
+          dob: encryptData(
+            req.body.dob
+          ),
+          gender: encryptData(
+            req.body.gender
+          ),
+          address: encryptData(
+            req.body.address
+          ),
+          courseEnrolled: encryptData(
+            req.body.courseEnrolled
+          ),
+          password: encryptData(
+            req.body.password
+          ),
+        },
+        { new: true }
+      );
 
     res.status(200).json({
       success: true,
       data: updatedStudent,
     });
   } catch (error) {
+    console.log(error);
+
     res.status(500).json({
       success: false,
       message: "Update Failed",
     });
   }
 };
-
 
 
 export const deleteStudent = async (req: Request, res: Response) => {
@@ -153,22 +256,32 @@ export const loginStudent = async (
   try {
     const { email, password } = req.body;
 
-    const student = await Student.findOne({
-      email,
-      password,
-    });
+    const students =
+      await Student.find();
 
-    if (!student) {
+    const matchedStudent =
+      students.find((student) => {
+        return (
+          decryptData(student.email) ===
+          email &&
+          decryptData(
+            student.password
+          ) === password
+        );
+      });
+
+    if (!matchedStudent) {
       return res.status(401).json({
         success: false,
-        message: "Invalid Email or Password",
+        message:
+          "Invalid Email or Password",
       });
     }
 
     return res.status(200).json({
       success: true,
       message: "Login Successful",
-      studentId: student._id,
+      studentId: matchedStudent._id,
     });
   } catch (error) {
     console.log(error);

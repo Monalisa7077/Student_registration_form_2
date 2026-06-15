@@ -165,7 +165,7 @@ const StudentForm = ({
 
         setFormData(initialFormData);
 
-        navigate("/students");
+        navigate("/success");
 
         return;
       }
