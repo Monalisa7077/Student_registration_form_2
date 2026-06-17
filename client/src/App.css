@@ -5,6 +5,33 @@
 }
 
 body {
-  background: #f4f6f9;
+  margin: 0;
+  padding: 0;
+ 
+
+  background-image: 
+  
+   linear-gradient(
+      rgba(30, 58, 138, 0.25),
+      rgba(30, 58, 138, 0.25)
+    ),
+  
+  url("../public/education.png");
+
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+
   font-family: Arial, sans-serif;
+}
+
+.page-overlay {
+  min-height: 100vh;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
 }

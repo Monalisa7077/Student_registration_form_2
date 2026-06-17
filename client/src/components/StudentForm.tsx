@@ -40,6 +40,11 @@ const StudentForm = ({
   const [formData, setFormData] =
     useState<StudentFormData>(initialFormData);
 
+  const [error, setError] =
+    useState("");
+  const [showErrorModal, setShowErrorModal] =
+    useState(false);
+
   const [loading, setLoading] =
     useState(false);
 
@@ -86,9 +91,15 @@ const StudentForm = ({
       HTMLInputElement | HTMLSelectElement
     >
   ) => {
+    const { name, value } = e.target;
+
+    if (name === "phoneNumber") {
+      if (!/^\d*$/.test(value)) return;
+    }
+
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value,
+      [name]: value,
     });
   };
 
@@ -96,6 +107,16 @@ const StudentForm = ({
     e: React.FormEvent<HTMLFormElement>
   ) => {
     e.preventDefault();
+
+    if (!/^\d{10}$/.test(formData.phoneNumber)) {
+      setError(
+        "Phone number must be exactly 10 digits"
+      );
+
+      setShowErrorModal(true);
+
+      return;
+    }
 
     if (
       !formData.fullName ||
@@ -112,6 +133,7 @@ const StudentForm = ({
     }
 
     try {
+      setError("");
       setLoading(true);
 
       const encryptedData = {
@@ -159,9 +181,9 @@ const StudentForm = ({
           encryptedData
         );
 
-        alert(
-          "Student Registered Successfully"
-        );
+        // alert(
+        //   "Student Registered Successfully"
+        // );
 
         setFormData(initialFormData);
 
@@ -171,10 +193,15 @@ const StudentForm = ({
       }
 
       setFormData(initialFormData);
-    } catch (error) {
+    } catch (error: any) {
       console.error(error);
 
-      alert("Operation Failed");
+      setError(
+        error?.response?.data?.message ||
+        "Operation Failed"
+      );
+      setShowErrorModal(true);
+
     } finally {
       setLoading(false);
     }
@@ -182,6 +209,19 @@ const StudentForm = ({
 
   return (
     <div className="student-form-container">
+
+      {editId && (
+        <button
+          type="button"
+          className="close-btn"
+          onClick={() =>
+            navigate("/students")
+          }
+        >
+          ✕
+        </button>
+      )}
+
       <h2 className="student-form-title">
         {editId
           ? "Update Student"
@@ -213,6 +253,7 @@ const StudentForm = ({
           name="phoneNumber"
           value={formData.phoneNumber}
           placeholder="Phone Number"
+          maxLength={10}
           onChange={handleChange}
         />
 
@@ -231,12 +272,15 @@ const StudentForm = ({
           <option value="">
             Select Gender
           </option>
+
           <option value="Male">
             Male
           </option>
+
           <option value="Female">
             Female
           </option>
+
           <option value="Other">
             Other
           </option>
@@ -277,6 +321,24 @@ const StudentForm = ({
               : "Register Student"}
         </button>
       </form>
+
+      {showErrorModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>⚠ Error</h3>
+
+            <p>{error}</p>
+
+            <button
+              onClick={() =>
+                setShowErrorModal(false)
+              }
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

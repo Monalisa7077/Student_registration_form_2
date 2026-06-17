@@ -1,0 +1,89 @@
+.student-list-container {
+  width: 100%;
+}
+
+.student-list-title {
+  color: white;
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.student-table {
+  width: 100%;
+  border-collapse: collapse;
+
+  background: transparent;
+
+  color: white;
+}
+
+.student-table thead {
+  background: linear-gradient(
+    135deg,
+    #1e3a8a,
+    #2563eb
+  );
+}
+
+.student-table th {
+  color: white;
+  padding: 16px;
+  text-align: left;
+  font-size: 15px;
+}
+
+.student-table td {
+  padding: 16px;
+  color: white;
+  border-bottom: 1px solid
+    rgba(255, 255, 255, 0.15);
+}
+
+.student-table tbody tr:hover {
+  background: rgba(
+    255,
+    255,
+    255,
+    0.08
+  );
+}
+
+.action-buttons {
+  display: flex;
+  gap: 10px;
+}
+
+.edit-btn {
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.edit-btn:hover {
+  background: #1d4ed8;
+}
+
+.delete-btn {
+  background: #dc2626;
+  color: white;
+  border: none;
+  padding: 8px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.delete-btn:hover {
+  background: #b91c1c;
+}
+
+.no-data {
+  text-align: center;
+  padding: 25px;
+  font-weight: 600;
+  color: #666;
+}

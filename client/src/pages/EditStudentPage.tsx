@@ -8,11 +8,11 @@ const EditStudentPage = () => {
     location.state?.student;
 
   return (
-    <div>
-      <StudentForm
-        selectedStudent={student}
-      />
-    </div>
+    <div className="page-overlay">
+    <StudentForm
+      selectedStudent={student}
+    />
+  </div>
   );
 };
 

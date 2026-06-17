@@ -6,6 +6,7 @@ const SuccessPage = () => {
 
   return (
     <div className="success-container">
+       <div className="page-overlay">
       <div className="success-card">
         <div className="success-icon">
           🎉
@@ -29,6 +30,7 @@ const SuccessPage = () => {
           Go To Login
         </button>
       </div>
+    </div>
     </div>
   );
 };

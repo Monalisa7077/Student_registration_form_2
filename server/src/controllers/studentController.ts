@@ -25,17 +25,14 @@ export const registerStudent = async (
       students.find((student) => {
         return (
           decryptData(student.email) ===
-          email &&
-          decryptData(student.password) ===
-          password
+          email
         );
       });
 
     if (existingStudent) {
       return res.status(400).json({
         success: false,
-        message:
-          "A student with the same email and password already exists",
+        message: "Email already exists",
       });
     }
 
@@ -134,17 +131,14 @@ export const updateStudent = async (req: Request, res: Response) => {
       students.find((student) => {
         return (
           decryptData(student.email) ===
-          req.body.email &&
-          decryptData(student.password) ===
-          req.body.password
+          req.body.email
         );
       });
 
     if (existingStudent) {
       return res.status(400).json({
         success: false,
-        message:
-          "A student with the same email and password already exists",
+        message: "Email already exists",
       });
     }
 

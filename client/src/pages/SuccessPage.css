@@ -1,10 +1,5 @@
 .success-container {
   min-height: 100vh;
-  background: linear-gradient(
-    135deg,
-    #f6f8ff,
-    #e9edff
-  );
 
   display: flex;
   justify-content: center;
@@ -13,10 +8,11 @@
 
 .success-card {
   width: 450px;
-  background: white;
+  background: #7cb9c9;
   padding: 40px;
   border-radius: 20px;
   text-align: center;
+  
 
   box-shadow: 0 10px 30px
     rgba(0, 0, 0, 0.1);
@@ -40,7 +36,7 @@
 }
 
 .success-btn {
-  background: #2d2853;
+  background: #077680;
   color: white;
   border: none;
   padding: 12px 24px;
@@ -51,5 +47,5 @@
 }
 
 .success-btn:hover {
-  background: #433d7a;
+  background: #01485c;
 }

@@ -1,5 +1,6 @@
 .student-management-container {
-  max-width: 1200px;
+  width: 100%;
+  max-width: 1400px;
   margin: 30px auto;
   padding: 20px;
 }
@@ -29,12 +30,35 @@
 }
 
 .create-student-btn:hover {
-  background-color: #433d7a;
+  background-color: #01485c;
 }
 
 .student-table-wrapper {
-  background: white;
-  padding: 20px;
-  border-radius: 12px;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  width: 95%;
+  max-width: 1200px;
+
+  margin: auto;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.15
+  );
+
+  backdrop-filter: blur(15px);
+
+  padding: 30px;
+
+  border-radius: 20px;
+
+  border: 1px solid rgba(
+    255,
+    255,
+    255,
+    0.3
+  );
+
+  box-shadow: 0 10px 30px
+    rgba(0, 0, 0, 0.2);
 }

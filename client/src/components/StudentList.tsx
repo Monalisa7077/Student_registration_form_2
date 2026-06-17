@@ -4,8 +4,8 @@ import {
   getStudents,
   deleteStudent,
 } from "../api/studentApi";
-
 import { decryptData } from "../utils/crypto";
+import "./StudentList.css";
 
 interface Student {
   _id: string;
@@ -25,7 +25,6 @@ interface StudentListProps {
 }
 
 const StudentList = ({
-  setSelectedStudent,
 }: StudentListProps) => {
   const [students, setStudents] =
     useState<Student[]>([]);
@@ -35,7 +34,6 @@ const StudentList = ({
   const fetchStudents = async () => {
     try {
       const res = await getStudents();
-      console.log(res.data.data);
 
       setStudents(res.data.data);
     } catch (error) {
@@ -73,10 +71,12 @@ const StudentList = ({
   }, []);
 
   return (
-    <div>
-      <h2>Student List</h2>
+    <div className="student-list-container">
+      <h2 className="student-list-title">
+        Student List
+      </h2>
 
-      <table border={1}>
+      <table className="student-table">
         <thead>
           <tr>
             <th>Name</th>
@@ -88,56 +88,71 @@ const StudentList = ({
         </thead>
 
         <tbody>
-          {students.map((student) => (
-            <tr key={student._id}>
-              <td>
-                {console.log(
-                  "Decrypted Name:",
-                  decryptData(student.fullName)
-                )}
-                {decryptData(student.fullName)}
-              </td>
+          {students.length > 0 ? (
+            students.map((student) => (
+              <tr key={student._id}>
+                <td>
+                  {decryptData(
+                    student.fullName
+                  )}
+                </td>
 
-              <td>{student.email}</td>
+                <td>{student.email}</td>
 
-              <td>
-                {decryptData(
-                  student.phoneNumber
-                )}
-              </td>
+                <td>
+                  {decryptData(
+                    student.phoneNumber
+                  )}
+                </td>
 
-              <td>
-                {decryptData(
-                  student.courseEnrolled
-                )}
-              </td>
+                <td>
+                  {decryptData(
+                    student.courseEnrolled
+                  )}
+                </td>
 
-              <td>
-                <button
-                  onClick={() =>
-                    navigate(
-                      `/edit-student/${student._id}`,
-                      {
-                        state: { student },
+                <td>
+                  <div className="action-buttons">
+                    <button
+                      className="edit-btn"
+                      onClick={() =>
+                        navigate(
+                          `/edit-student/${student._id}`,
+                          {
+                            state: {
+                              student,
+                            },
+                          }
+                        )
                       }
-                    )
-                  }
-                >
-                  Edit
-                </button>
+                    >
+                      Edit
+                    </button>
 
-                <button
-                  onClick={() =>
-                    handleDelete(
-                      student._id
-                    )
-                  }
-                >
-                  Delete
-                </button>
+                    <button
+                      className="delete-btn"
+                      onClick={() =>
+                        handleDelete(
+                          student._id
+                        )
+                      }
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            ))
+          ) : (
+            <tr>
+              <td
+                colSpan={5}
+                className="no-data"
+              >
+                No Students Found
               </td>
             </tr>
-          ))}
+          )}
         </tbody>
       </table>
     </div>
