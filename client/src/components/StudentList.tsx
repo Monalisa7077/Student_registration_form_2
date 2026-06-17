@@ -29,6 +29,12 @@ const StudentList = ({
   const [students, setStudents] =
     useState<Student[]>([]);
 
+  const [showDeleteModal, setShowDeleteModal] =
+    useState(false);
+
+  const [selectedDeleteId, setSelectedDeleteId] =
+    useState("");
+
   const navigate = useNavigate();
 
   const fetchStudents = async () => {
@@ -41,28 +47,17 @@ const StudentList = ({
     }
   };
 
-  const handleDelete = async (
-    id: string
-  ) => {
-    const confirmDelete =
-      window.confirm(
-        "Are you sure you want to delete this student?"
-      );
-
-    if (!confirmDelete) return;
-
+  const handleDelete = async () => {
     try {
-      await deleteStudent(id);
+      await deleteStudent(
+        selectedDeleteId
+      );
 
       fetchStudents();
 
-      alert(
-        "Student Deleted Successfully"
-      );
+      setShowDeleteModal(false);
     } catch (error) {
       console.log(error);
-
-      alert("Delete Failed");
     }
   };
 
@@ -131,11 +126,15 @@ const StudentList = ({
 
                     <button
                       className="delete-btn"
-                      onClick={() =>
-                        handleDelete(
+                      onClick={() => {
+                        setSelectedDeleteId(
                           student._id
-                        )
-                      }
+                        );
+
+                        setShowDeleteModal(
+                          true
+                        );
+                      }}
                     >
                       Delete
                     </button>
@@ -155,6 +154,41 @@ const StudentList = ({
           )}
         </tbody>
       </table>
+
+      {showDeleteModal && (
+        <div className="modal-overlay">
+          <div className="modal-box">
+            <h3>
+              ⚠ Confirm Delete
+            </h3>
+
+            <p>
+              Are you sure you want
+              to delete this student?
+            </p>
+
+            <div className="modal-actions">
+              <button
+                className="cancel-btn"
+                onClick={() =>
+                  setShowDeleteModal(
+                    false
+                  )
+                }
+              >
+                Cancel
+              </button>
+
+              <button
+                className="confirm-btn"
+                onClick={handleDelete}
+              >
+                Delete
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
